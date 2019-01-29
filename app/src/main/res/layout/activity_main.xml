@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fr.ensma.ia.tictactoe.GlobalAgent.GameView
+    android:id="@+id/game"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
