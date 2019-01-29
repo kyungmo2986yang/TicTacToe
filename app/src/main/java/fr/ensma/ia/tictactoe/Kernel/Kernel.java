@@ -1,8 +1,8 @@
-package tictactoe.kernel;
+package fr.ensma.ia.tictactoe.Kernel;
 
-import tictactoe.kernel.grid.EPlayer;
-import tictactoe.kernel.grid.Grid;
-import tictactoe.kernel.grid.OutOfGridException;
+import fr.ensma.ia.tictactoe.Kernel.Grid.EPlayer;
+import fr.ensma.ia.tictactoe.Kernel.Grid.Grid;
+import fr.ensma.ia.tictactoe.Kernel.Grid.OutOfGridException;
 
 public class Kernel {
 	private Grid the_grid;

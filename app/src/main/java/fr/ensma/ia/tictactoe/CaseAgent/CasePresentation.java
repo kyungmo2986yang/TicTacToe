@@ -1,16 +1,20 @@
 package fr.ensma.ia.tictactoe.CaseAgent;
 
+import fr.ensma.ia.tictactoe.BoardAgent.BoardObservation.ICaseObservee;
+import fr.ensma.ia.tictactoe.BoardAgent.BoardObservation.ICaseObserver;
 import fr.ensma.ia.tictactoe.CaseAgent.Automate.CaseException;
 import fr.ensma.ia.tictactoe.CaseAgent.Automate.CaseStateUnClicked;
 import fr.ensma.ia.tictactoe.CaseAgent.Automate.CaseStateUnclickable;
 import fr.ensma.ia.tictactoe.CaseAgent.Automate.ICaseState;
 
-public class CasePresentation {
+public class CasePresentation implements ICaseObservee {
     private ICaseView view;
     private CaseModel model;
     private ICaseState currentState;
     private ICaseState unclickedState;
     private ICaseState unclickableState;
+
+    private ICaseObserver caseReferee;
 
     public CasePresentation() {
         model = new CaseModel();
@@ -25,9 +29,10 @@ public class CasePresentation {
     public void actionClick(){
         try {
             currentState.toClicked();
-            view.notifyAccess(model.isAccessible());
         }
         catch (CaseException e){
+        } finally {
+            view.notifyAccess(model.isAccessible());
         }
     }
 
@@ -37,9 +42,10 @@ public class CasePresentation {
     public void actionToReset(){
         try {
             currentState.toClickable();
-            view.notifyAccess(model.isAccessible());
         }
         catch (CaseException e){
+        } finally {
+            view.notifyAccess(model.isAccessible());
         }
     }
 
@@ -81,5 +87,20 @@ public class CasePresentation {
 
     public void setUnclickableState(ICaseState unclickableState) {
         this.unclickableState = unclickableState;
+    }
+
+    @Override
+    public void caseInitiate(ICaseObserver obs) {
+        caseReferee = obs;
+    }
+
+    @Override
+    public void caseNotifyNews() {
+
+    }
+
+    @Override
+    public void caseNotifyViews() {
+
     }
 }

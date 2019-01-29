@@ -1,4 +1,4 @@
-package tictactoe.kernel.grid;
+package fr.ensma.ia.tictactoe.Kernel.Grid;
 
 import java.util.ArrayList;
 import java.util.List;

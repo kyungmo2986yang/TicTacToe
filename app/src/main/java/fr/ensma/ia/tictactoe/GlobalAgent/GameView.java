@@ -41,16 +41,24 @@ public class GameView extends LinearLayout implements IGameView {
     public void init(Context ctx) {
         View v = inflate(ctx, R.layout.global_layout, this);
         buttonView = findViewById(R.id.menu);
+        buttonView.notifyAccess(false);
         boardView = findViewById(R.id.board);
+        boardView.notifyAccess(true);
+
+
     }
 
     @Override
-    public void notifyAccess(boolean b, boolean c) {
-        if (b){
+    public void notifyAccess(boolean boardAccessibility, boolean buttonAccessibility) {
+        buttonView.notifyAccess(buttonAccessibility);
+        boardView.notifyAccess(boardAccessibility);
+    }
 
-        }
-        if (c){
+    public BoardView getBoardView() {
+        return boardView;
+    }
 
-        }
+    public MenuButtonView getButtonView() {
+        return buttonView;
     }
 }

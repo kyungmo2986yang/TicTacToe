@@ -4,13 +4,16 @@ import fr.ensma.ia.tictactoe.MenuButton.Automate.IMenuButtonState;
 import fr.ensma.ia.tictactoe.MenuButton.Automate.MenuButtonClickable;
 import fr.ensma.ia.tictactoe.MenuButton.Automate.MenuButtonException;
 import fr.ensma.ia.tictactoe.MenuButton.Automate.MenuButtonUnclickable;
+import fr.ensma.ia.tictactoe.ObserverPattern.IObservee;
+import fr.ensma.ia.tictactoe.ObserverPattern.IObserver;
 
-public class MenuButtonPresentation {
+public class MenuButtonPresentation implements IObservee {
     private IMenuButtonView view;
     private MenuButtonModel model;
     private IMenuButtonState currentState;
     private IMenuButtonState unclickableState;
     private IMenuButtonState clickableState;
+    private IObserver referee;
 
     public void actionClick(){
         try{
@@ -75,5 +78,24 @@ public class MenuButtonPresentation {
         unclickableState = new MenuButtonUnclickable(this, model);
         clickableState = new MenuButtonClickable(this, model);
         currentState = unclickableState;
+    }
+
+    @Override
+    public void initiate(IObserver observer) {
+        referee = observer;
+    }
+
+    @Override
+    public void notifyModifications() {
+        referee.update();
+    }
+
+    @Override
+    public void notifyViews() {
+        referee.updateViews();
+    }
+
+    public IObserver getReferee(){
+        return referee;
     }
 }

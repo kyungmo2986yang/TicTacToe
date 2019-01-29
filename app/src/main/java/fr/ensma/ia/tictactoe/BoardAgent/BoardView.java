@@ -60,6 +60,7 @@ public class BoardView extends GridLayout implements IBoardView {
             String iD = "butt" + (i+1);
             int resID = getResources().getIdentifier(iD, "id", getContext().getPackageName());
             caseViews[i] = ((CaseView) findViewById(resID));
+
         }
     }
 

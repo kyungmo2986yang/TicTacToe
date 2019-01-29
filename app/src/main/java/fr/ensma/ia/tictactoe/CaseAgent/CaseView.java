@@ -47,6 +47,8 @@ public class CaseView extends AppCompatImageButton implements ICaseView, View.On
     public void onClick(View v) {
         setImageResource(R.drawable.cross_case);
         pres.actionClick();
+
+        System.out.println(pres.getModel().getRow() + "//" + pres.getModel().getColumn());
     }
 
     @Override

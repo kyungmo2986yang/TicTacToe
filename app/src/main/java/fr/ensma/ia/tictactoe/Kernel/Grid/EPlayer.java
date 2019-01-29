@@ -1,4 +1,4 @@
-package tictactoe.kernel.grid;
+package fr.ensma.ia.tictactoe.Kernel.Grid;
 
 public enum EPlayer {
 	Empty, FirstPlayer, SecondPlayer;

@@ -44,6 +44,7 @@ public class GamePresentation implements IObserver {
         gameStateBegan = new GameStateBegan(this, model);
         gameStateEnded = new GameStateEnded(this, model);
         gameStateInProcess = new GameStateInProcess(this, model);
+        currentState = gameStateBegan;
     }
 
     public void actionStartGame(){
@@ -89,10 +90,6 @@ public class GamePresentation implements IObserver {
         this.model = model;
     }
 
-    public IGameState getCurrentState() {
-        return currentState;
-    }
-
     public void setCurrentState(IGameState currentState) {
         this.currentState = currentState;
     }
@@ -101,28 +98,37 @@ public class GamePresentation implements IObserver {
         return gameStateBegan;
     }
 
-    public void setGameStateBegan(IGameState gameStateBegan) {
-        this.gameStateBegan = gameStateBegan;
-    }
-
     public IGameState getGameStateEnded() {
         return gameStateEnded;
-    }
-
-    public void setGameStateEnded(IGameState gameStateEnded) {
-        this.gameStateEnded = gameStateEnded;
     }
 
     public IGameState getGameStateInProcess() {
         return gameStateInProcess;
     }
 
-    public void setGameStateInProcess(IGameState gameStateInProcess) {
-        this.gameStateInProcess = gameStateInProcess;
+    @Override
+    public void initiate() {
+        boardPres.initiate(this);
+        menuPres.initiate(this);
     }
 
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void updateViews() {
+        if (getBoardPres().getCurrentState() == getBoardPres().getBoardStateEnded()){
+            actionEndGame();
+            getBoardPres().getView().notifyAccess(false);
+            getMenuPres().getView().notifyAccess(true);
+        }
+        if (getBoardPres().getCurrentState() == getBoardPres().getBoardStateEnded()
+        && getMenuPres().getCurrentState() == getMenuPres().getUnclickableState()){
+            actionStartGame();
+            getBoardPres().getView().notifyAccess(true);
+            getMenuPres().getView().notifyAccess(false);
+        }
     }
 }
