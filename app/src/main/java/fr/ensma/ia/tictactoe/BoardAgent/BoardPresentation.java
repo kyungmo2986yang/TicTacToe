@@ -16,7 +16,7 @@ public class BoardPresentation {
     private IBoardState boardStateStarted;
     private IBoardState boardStateChangedTurns;
     private IBoardState boardStateEnded;
-    private CasePresentation[] presentations = new CasePresentation[9];
+    private CasePresentation[] presentations;
 
     public BoardPresentation() {
         model = new BoardModel();
@@ -25,6 +25,7 @@ public class BoardPresentation {
         boardStateStarted = new BoardStateStarted(this, model);
         currentState = boardStateStarted;
 
+        presentations = new CasePresentation[9];
         for (int i = 0; i < presentations.length; i++) {
             presentations[i] = new CasePresentation();
         }

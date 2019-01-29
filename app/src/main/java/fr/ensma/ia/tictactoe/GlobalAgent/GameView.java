@@ -5,10 +5,14 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import fr.ensma.ia.tictactoe.BoardAgent.BoardView;
+import fr.ensma.ia.tictactoe.MenuButton.MenuButtonView;
 import fr.ensma.ia.tictactoe.R;
 
 public class GameView extends LinearLayout implements IGameView {
 
+    MenuButtonView buttonView;
+    BoardView boardView;
     GamePresentation pres;
 
     public GameView(Context context) {
@@ -36,6 +40,8 @@ public class GameView extends LinearLayout implements IGameView {
 
     public void init(Context ctx) {
         View v = inflate(ctx, R.layout.global_layout, this);
+        buttonView = findViewById(R.id.menu);
+        boardView = findViewById(R.id.board);
     }
 
     @Override
