@@ -7,9 +7,9 @@ public abstract class AbstractGameState implements IGameState{
     protected GamePresentation pres;
     protected GameModel model;
 
-    @Override
-    public void toBegin() throws GameException{
-        throw new GameException();
+    public AbstractGameState(GamePresentation pres, GameModel model) {
+        this.pres = pres;
+        this.model = model;
     }
 
     @Override
@@ -20,10 +20,5 @@ public abstract class AbstractGameState implements IGameState{
     @Override
     public void intoProcess() throws GameException{
         throw new GameException();
-    }
-
-    public AbstractGameState(GamePresentation pres, GameModel model) {
-        this.pres = pres;
-        this.model = model;
     }
 }

@@ -1,52 +1,76 @@
 package fr.ensma.ia.tictactoe.Kernel;
 
+import java.util.logging.Logger;
+
 import fr.ensma.ia.tictactoe.Kernel.Grid.EPlayer;
 import fr.ensma.ia.tictactoe.Kernel.Grid.Grid;
 import fr.ensma.ia.tictactoe.Kernel.Grid.OutOfGridException;
 
 public class Kernel {
-	private Grid the_grid;
-	private EPlayer current_player;
+	private Grid theGrid;
+	private EPlayer currentPlayer;
+	private static int notEnded = 3;
+	private static Logger LOGGER = Logger.getLogger(Kernel.class.getName());
 	
 	public Kernel()
 	{
-		the_grid = new Grid(3);
-		current_player = EPlayer.FirstPlayer;
+		theGrid = new Grid(3);
+		currentPlayer = EPlayer.FirstPlayer;
+	}
+
+	public int getNotEnded(){
+		return notEnded;
 	}
 	
-	public void next_player()
+	public void nextPlayer()
 	{
-		if(current_player != EPlayer.FirstPlayer)
+		if(currentPlayer == EPlayer.SecondPlayer)
 		{
-			current_player = EPlayer.FirstPlayer;
+			currentPlayer = EPlayer.FirstPlayer;
 		}
 		else
 		{
-			current_player = EPlayer.SecondPlayer;
+			currentPlayer = EPlayer.SecondPlayer;
 		}
 	}
-	
-	public EPlayer tileClicked(int row, int column) throws OutOfGridException
+
+	public int tileClicked(int row, int column) throws OutOfGridException
 	{
-		EPlayer just_played = current_player;
-		the_grid.set(row, column, just_played);
-		next_player();
-		return just_played;
+		theGrid.set(row, column, currentPlayer);
+		if (winningLine(row, column)){
+			LOGGER.info(currentPlayer + " wins");
+			return currentPlayer.getPlayerVal();
+		}
+		if (draw()){
+			LOGGER.info("draw");
+			return 0;
+		}
+		nextPlayer();
+		LOGGER.info(currentPlayer + " plays");
+		return notEnded;
 	}
 	
 	public boolean draw()
 	{
-		return the_grid.gridIsFull();
+		return theGrid.gridIsFull();
+	}
+
+	public boolean empty(){
+		return theGrid.gridIsEmpty();
 	}
 	
 	public boolean winningLine(int row, int column) throws OutOfGridException
 	{
-		return the_grid.winningLine(row, column);
+		return theGrid.winningLine(row, column);
 	}
 	
 	public void resetGame()
 	{
-		the_grid.reset();
-		current_player = EPlayer.FirstPlayer;
+		theGrid.reset();
+		currentPlayer = EPlayer.FirstPlayer;
 	}
+
+    public int getCurrentPlayer() {
+		return currentPlayer.getPlayerVal();
+    }
 }

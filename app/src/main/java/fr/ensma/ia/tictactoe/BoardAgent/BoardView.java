@@ -13,13 +13,12 @@ public class BoardView extends GridLayout implements IBoardView {
     private BoardPresentation pres;
     private CaseView[] caseViews = new CaseView[9];
 
-    public BoardPresentation getPres() {
-        return pres;
-    }
-
     public void setPres(BoardPresentation pres) {
         this.pres = pres;
-        setPreses(pres.getPresentations());
+        pres.setView(this);
+        for (int i = 0; i < caseViews.length; i++) {
+            caseViews[i].setPres(pres.getPresentations()[i]);
+        }
 
     }
 
@@ -60,14 +59,11 @@ public class BoardView extends GridLayout implements IBoardView {
             String iD = "butt" + (i+1);
             int resID = getResources().getIdentifier(iD, "id", getContext().getPackageName());
             caseViews[i] = ((CaseView) findViewById(resID));
-
         }
     }
 
     @Override
-    public void notifyAccess(boolean b){
-        for(int i = 0; i < caseViews.length; i++) {
-            caseViews[i].notifyAccess(b);
-        }
+    public void notifyTheEnd(boolean b) {
+        pres.activateAll(!b);
     }
 }

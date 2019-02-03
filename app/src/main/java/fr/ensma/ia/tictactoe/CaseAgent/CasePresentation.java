@@ -10,11 +10,9 @@ import fr.ensma.ia.tictactoe.CaseAgent.Automate.ICaseState;
 public class CasePresentation implements ICaseObservee {
     private ICaseView view;
     private CaseModel model;
-    private ICaseState currentState;
-    private ICaseState unclickedState;
-    private ICaseState unclickableState;
+    private ICaseState currentState, unclickedState, unclickableState;
 
-    private ICaseObserver caseReferee;
+    private ICaseObserver iCaseObserver;
 
     public CasePresentation() {
         model = new CaseModel();
@@ -23,12 +21,28 @@ public class CasePresentation implements ICaseObservee {
         currentState = unclickedState;
     }
 
-    /**
-     * action corresponding to when the case is touched
-     */
-    public void actionClick(){
+    @Override
+    public void caseInitiate(ICaseObserver obs) {
+        iCaseObserver = obs;
+    }
+
+    public int fetchImage(){//1-2 //1-3 in CaseView
+        return model.getCurrentId();
+    }
+
+    public void actionClick(){//1-5
+        notifyCoords();//1-5
+        actionDeactivate();
+    }
+
+    @Override
+    public void notifyCoords() {//1-5 //suite in BoardPresentation
+        iCaseObserver.updateCoords(model.getRow() - 1, model.getColumn() - 1);
+    }
+
+    public void actionDeactivate(){
         try {
-            currentState.toClicked();
+            currentState.toUnclickable();
         }
         catch (CaseException e){
         } finally {
@@ -36,18 +50,30 @@ public class CasePresentation implements ICaseObservee {
         }
     }
 
-    /**
-     * action correponding to when the replay button is pressed
-     */
-    public void actionToReset(){
+    public void settleNextTurn(){
+        model.changeId();
+    }
+
+    public void actionActivate(){
         try {
             currentState.toClickable();
-        }
-        catch (CaseException e){
-        } finally {
+        } catch (CaseException e) {
+            e.printStackTrace();
+        } finally{
             view.notifyAccess(model.isAccessible());
+            model.setCurrentId(model.getIds()[1]);
         }
     }
+
+
+
+
+
+
+
+
+
+
 
     public ICaseView getView() {
         return view;
@@ -65,42 +91,19 @@ public class CasePresentation implements ICaseObservee {
         this.model = model;
     }
 
-    public ICaseState getCurrentState() {
-        return currentState;
-    }
-
     public void setCurrentState(ICaseState currentState) {
         this.currentState = currentState;
+    }
+
+    public ICaseState getCurrentState() {
+        return currentState;
     }
 
     public ICaseState getUnclickedState() {
         return unclickedState;
     }
 
-    public void setUnclickedState(ICaseState unclickedState) {
-        this.unclickedState = unclickedState;
-    }
-
     public ICaseState getUnclickableState() {
         return unclickableState;
-    }
-
-    public void setUnclickableState(ICaseState unclickableState) {
-        this.unclickableState = unclickableState;
-    }
-
-    @Override
-    public void caseInitiate(ICaseObserver obs) {
-        caseReferee = obs;
-    }
-
-    @Override
-    public void caseNotifyNews() {
-
-    }
-
-    @Override
-    public void caseNotifyViews() {
-
     }
 }

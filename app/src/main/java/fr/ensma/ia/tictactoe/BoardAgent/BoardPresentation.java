@@ -1,13 +1,11 @@
 package fr.ensma.ia.tictactoe.BoardAgent;
 
 import fr.ensma.ia.tictactoe.BoardAgent.Automate.BoardException;
-import fr.ensma.ia.tictactoe.BoardAgent.Automate.BoardStateChangedTurns;
 import fr.ensma.ia.tictactoe.BoardAgent.Automate.BoardStateEnded;
-import fr.ensma.ia.tictactoe.BoardAgent.Automate.BoardStateStarted;
+import fr.ensma.ia.tictactoe.BoardAgent.Automate.BoardStateInPlay;
 import fr.ensma.ia.tictactoe.BoardAgent.Automate.IBoardState;
 import fr.ensma.ia.tictactoe.BoardAgent.BoardObservation.ICaseObserver;
 import fr.ensma.ia.tictactoe.CaseAgent.CasePresentation;
-import fr.ensma.ia.tictactoe.CaseAgent.CaseView;
 import fr.ensma.ia.tictactoe.ObserverPattern.IObservee;
 import fr.ensma.ia.tictactoe.ObserverPattern.IObserver;
 
@@ -15,19 +13,15 @@ public class BoardPresentation implements IObservee, ICaseObserver {
     private IBoardView view;
     private BoardModel model;
 
-    private IBoardState currentState;
-    private IBoardState boardStateStarted;
-    private IBoardState boardStateChangedTurns;
-    private IBoardState boardStateEnded;
+    private IBoardState currentState, allEnabledState, allDisabledState;
     private CasePresentation[] presentations;
-    private IObserver referee;
+    private IObserver iObserver;
 
     public BoardPresentation() {
         model = new BoardModel();
-        boardStateChangedTurns = new BoardStateChangedTurns(this, model);
-        boardStateEnded = new BoardStateEnded(this, model);
-        boardStateStarted = new BoardStateStarted(this, model);
-        currentState = boardStateStarted;
+        allDisabledState = new BoardStateEnded(this, model);
+        allEnabledState = new BoardStateInPlay(this, model);
+        currentState = allEnabledState;
 
         presentations = new CasePresentation[9];
         for (int i = 0; i < presentations.length; i++) {
@@ -35,37 +29,8 @@ public class BoardPresentation implements IObservee, ICaseObserver {
             presentations[i].getModel().setRow(3 - i/3);
             presentations[i].getModel().setColumn(i%3 + 1);
         }
-    }
+        initiate();
 
-    public CasePresentation[] getPresentations() {
-        return presentations;
-    }
-
-    public void actionPlaying(){
-        try {
-            currentState.toChangeTurns();
-            view.notifyAccess(model.isAccess());
-        } catch (BoardException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void actionStartAPlay(){
-        try {
-            currentState.toStartAnew();
-            view.notifyAccess(model.isAccess());
-        } catch (BoardException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void actionEndOfPlay(){
-        try{
-            currentState.toTheEnd();
-            view.notifyAccess(model.isAccess());
-        } catch (BoardException e) {
-            e.printStackTrace();
-        }
     }
 
     public IBoardView getView() {
@@ -84,64 +49,84 @@ public class BoardPresentation implements IObservee, ICaseObserver {
         this.model = model;
     }
 
-    public IBoardState getCurrentState() {
-        return currentState;
-    }
-
     public void setCurrentState(IBoardState currentState) {
         this.currentState = currentState;
     }
 
-    public IBoardState getBoardStateStarted() {
-        return boardStateStarted;
+    public IBoardState getAllEnabledState() {
+        return allEnabledState;
     }
 
-    public IBoardState getBoardStateChangedTurns() {
-        return boardStateChangedTurns;
+    public IBoardState getAllDisabledState() {
+        return allDisabledState;
     }
 
-    public IBoardState getBoardStateEnded() {
-        return boardStateEnded;
-    }
-
-    @Override
-    public void initiate(IObserver observer) {
-        referee = observer;
+    public CasePresentation[] getPresentations() {
+        return presentations;
     }
 
     @Override
-    public void notifyModifications() {
-        referee.update();
-    }
-
-    @Override
-    public void notifyViews() {
-        referee.updateViews();
-    }
-
-    public IObserver getReferee(){
-        return referee;
-    }
-
-    @Override
-    public void caseInitiate() {
-        for (int i = 0; i < presentations.length; i++) {
-            presentations[i].caseInitiate(this);
+    public void initiate() {
+        for (CasePresentation presentation : presentations) {
+            presentation.caseInitiate(this);
         }
     }
 
     @Override
-    public void caseUpdate() {
-
+    public void updateCoords(int x, int y) {
+        notifyOnclickCoord(x, y);//1-5
     }
 
     @Override
-    public void caseUpdateViews() {
-
+    public void notifyOnclickCoord(int x, int y) {//1-5 //suite in GamePresentation
+        iObserver.updateOnClickCoord(x, y);
     }
 
     @Override
-    public void caseExecute() {
+    public void initiate(IObserver observer) {
+        iObserver = observer;
+    }
 
+    @Override
+    public int fetchCurrentPlayer(){
+        return iObserver.notifyPlayer();
+    }
+
+    public void actionDeactivate(){
+        try {
+            currentState.toTheEnd();
+        } catch (BoardException e) {
+            e.printStackTrace();
+        } finally {
+            view.notifyTheEnd(!model.isAccess());
+        }
+    }
+
+    public void setNextPlayer() {
+        for (CasePresentation presentation : presentations) {
+            presentation.settleNextTurn();
+        }
+    }
+
+    public void actionActivate(){
+        try {
+            currentState.toStartAnew();
+        } catch (BoardException e) {
+            e.printStackTrace();
+        } finally {
+            view.notifyTheEnd(!model.isAccess());
+        }
+    }
+
+    public void activateAll(boolean b) {
+        if (b) {
+            for (CasePresentation presentation : presentations) {
+                presentation.actionActivate();
+            }
+        } else {
+            for (CasePresentation presentation : presentations) {
+                presentation.actionDeactivate();
+            }
+        }
     }
 }

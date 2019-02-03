@@ -14,7 +14,9 @@ public class GameStateInProcess extends AbstractGameState{
     }
 
     @Override
-    public void toTheEnd() throws GameException{
+    public void toTheEnd() {
+        pres.setCurrentState(pres.getGameStateEnded());
+        model.setAccessible(false);
         LOGGER.info("Passed on to EndedState");
     }
 }

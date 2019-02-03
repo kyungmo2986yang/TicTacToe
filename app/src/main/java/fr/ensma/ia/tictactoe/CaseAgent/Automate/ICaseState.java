@@ -1,6 +1,6 @@
 package fr.ensma.ia.tictactoe.CaseAgent.Automate;
 
 public interface ICaseState {
-    void toClicked() throws CaseException;
+    void toUnclickable() throws CaseException;
     void toClickable() throws CaseException;
 }

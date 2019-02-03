@@ -14,7 +14,9 @@ public class GameStateEnded extends AbstractGameState{
     }
 
     @Override
-    public void toBegin() throws GameException{
-        LOGGER.info("Passed on to StartedState");
+    public void intoProcess() throws GameException{
+        pres.setCurrentState(pres.getGameStateInProcess());
+        model.setAccessible(true);
+        LOGGER.info("Passed on to InProcessState");
     }
 }

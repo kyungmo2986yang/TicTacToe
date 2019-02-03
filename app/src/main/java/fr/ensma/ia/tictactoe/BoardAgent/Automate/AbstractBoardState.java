@@ -12,11 +12,6 @@ public abstract class AbstractBoardState implements IBoardState {
     }
 
     @Override
-    public void toChangeTurns() throws BoardException{
-        throw new BoardException();
-    }
-
-    @Override
     public void toStartAnew() throws BoardException{
         throw new BoardException();
     }

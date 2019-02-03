@@ -1,11 +1,37 @@
 package fr.ensma.ia.tictactoe.CaseAgent;
 
+import fr.ensma.ia.tictactoe.R;
+
 public class CaseModel {
     private boolean accessible;
     private int row, column;
+    private static int[] ids = {R.drawable.empty_case, R.drawable.cross_case, R.drawable.circle_case};
+    private int currentId;
 
-    public void setAccessible(boolean accessible) {
-        this.accessible = accessible;
+    public CaseModel(){
+        accessible = true;
+        currentId = ids[1];
+    }
+
+    public int[] getIds(){
+        return ids;
+    }
+
+    public int getCurrentId(){
+        return currentId;
+    }
+    public void setCurrentId(int anotherPlayer) {
+        currentId = anotherPlayer;
+    }
+
+    public void changeId(){
+        if (currentId == ids[1]){
+            currentId = ids[2];
+        }else{
+            if (currentId == ids[2]){
+                currentId = ids[1];
+            }
+        }
     }
 
     public int getRow() {
@@ -28,7 +54,7 @@ public class CaseModel {
         return accessible;
     }
 
-    public CaseModel(){
-        accessible = true;
+    public void setAccessible(boolean accessible) {
+        this.accessible = accessible;
     }
 }

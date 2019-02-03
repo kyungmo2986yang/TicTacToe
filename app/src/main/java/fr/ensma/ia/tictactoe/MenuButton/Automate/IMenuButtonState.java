@@ -1,6 +1,6 @@
 package fr.ensma.ia.tictactoe.MenuButton.Automate;
 
 public interface IMenuButtonState {
-    void toClickable() throws MenuButtonException;
-    void toClicked() throws MenuButtonException;
+    void toTheEnd() throws MenuButtonException;
+    void toTheBeginning() throws MenuButtonException;
 }

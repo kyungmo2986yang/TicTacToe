@@ -10,35 +10,18 @@ import fr.ensma.ia.tictactoe.ObserverPattern.IObserver;
 public class MenuButtonPresentation implements IObservee {
     private IMenuButtonView view;
     private MenuButtonModel model;
-    private IMenuButtonState currentState;
-    private IMenuButtonState unclickableState;
-    private IMenuButtonState clickableState;
-    private IObserver referee;
+    private IMenuButtonState currentState, unclickableState, clickableState;
+    private IObserver iObserver;
 
-    public void actionClick(){
-        try{
-            currentState.toClicked();
-            view.notifyAccess(model.isAccessible());
-        } catch (MenuButtonException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void actionReset(){
-        try{
-            currentState.toClickable();
-            view.notifyAccess(model.isAccessible());
-        } catch (MenuButtonException e){
-            e.printStackTrace();
-        }
+    public MenuButtonPresentation(){
+        model = new MenuButtonModel();
+        unclickableState = new MenuButtonUnclickable(this, model);
+        clickableState = new MenuButtonClickable(this, model);
+        currentState = unclickableState;
     }
 
     public IMenuButtonView getView() {
         return view;
-    }
-
-    public void setView(IMenuButtonView view) {
-        this.view = view;
     }
 
     public MenuButtonModel getModel() {
@@ -49,10 +32,6 @@ public class MenuButtonPresentation implements IObservee {
         this.model = model;
     }
 
-    public IMenuButtonState getCurrentState() {
-        return currentState;
-    }
-
     public void setCurrentState(IMenuButtonState currentState) {
         this.currentState = currentState;
     }
@@ -61,41 +40,49 @@ public class MenuButtonPresentation implements IObservee {
         return unclickableState;
     }
 
-    public void setUnclickableState(IMenuButtonState unclickableState) {
-        this.unclickableState = unclickableState;
-    }
-
     public IMenuButtonState getClickableState() {
         return clickableState;
     }
 
-    public void setClickableState(IMenuButtonState clickableState) {
-        this.clickableState = clickableState;
+    public void setView(IMenuButtonView view) {
+        this.view = view;
     }
 
-    public MenuButtonPresentation(){
-        model = new MenuButtonModel();
-        unclickableState = new MenuButtonUnclickable(this, model);
-        clickableState = new MenuButtonClickable(this, model);
-        currentState = unclickableState;
+    public void actionClick(){
+        iObserver.updateReset();
+    }
+
+    public void actionActivate(int reason){
+        try{
+            currentState.toTheEnd();
+        } catch (MenuButtonException e){
+            e.printStackTrace();
+        } finally {
+            view.notifyTheEnd(model.isAccessible(), reason);
+        }
+    }
+
+    public void actionDeactivate(){
+        try{
+            currentState.toTheBeginning();
+            view.notifyTheEnd(model.isAccessible(), 0);
+        } catch (MenuButtonException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void initiate(IObserver observer) {
-        referee = observer;
+        iObserver = observer;
     }
 
     @Override
-    public void notifyModifications() {
-        referee.update();
+    public int fetchCurrentPlayer() {
+        return iObserver.notifyPlayer();
     }
 
     @Override
-    public void notifyViews() {
-        referee.updateViews();
-    }
+    public void notifyOnclickCoord(int x, int y) {
 
-    public IObserver getReferee(){
-        return referee;
     }
 }

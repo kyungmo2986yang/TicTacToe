@@ -48,50 +48,61 @@ public class Grid {
 			throw new OutOfGridException();
 		}
 		
-		boolean result = false;
-		
 		// row
-		boolean result_row = false;
+		boolean resultRow = true;
 		for (int j=0; j<size; j++)
 		{
-			result_row &= grid.get(row).get(j) == grid.get(row).get(column);
+			resultRow &= grid.get(row).get(j) == grid.get(row).get(column);
 		}
-		result |= result_row;
+		boolean result = resultRow;
 		
 		// colum
-		boolean result_column = false;
+		boolean resultColumn = true;
 		for (int i=0; i<size; i++)
 		{
-			result_column &= grid.get(i).get(column) == grid.get(row).get(column);
+			resultColumn &= grid.get(i).get(column) == grid.get(row).get(column);
 		}
-		result |= result_column;
+		result |= resultColumn;
 		
 		// diagonal_down
-		if(size*(size-row) == size*column)
+		if(size*(size-1-row) == size*column)
 		{
-			boolean result_diagonal_down = false;
+			boolean resultDiagonalDown = true;
 			for (int j=0; j<size; j++)
 			{
-				result_diagonal_down &= grid.get(size-j).get(j) == grid.get(row).get(column);
+				resultDiagonalDown &= grid.get(size-1-j).get(j) == grid.get(row).get(column);
 			}
-			result |= result_diagonal_down;
+			result |= resultDiagonalDown;
 		}
 		
 		// diagonal_up
 		if(row == column)
 		{
-			boolean result_diagonal_up = false;
+			boolean resultDiagonalUp = true;
 			for (int j=0; j<size; j++)
 			{
-				result_diagonal_up &= grid.get(j).get(j) == grid.get(row).get(column);
+				resultDiagonalUp &= grid.get(j).get(j) == grid.get(row).get(column);
 			}
-			result |= result_diagonal_up;
+			result |= resultDiagonalUp;
 		}
 		
 		return result;
 	}
 	
 	public boolean gridIsFull()
+	{
+		boolean result = true;
+		for(int i=0; i<size; i++)
+		{
+			for(int j=0; j<size; j++)
+			{
+				result &= grid.get(i).get(j) != EPlayer.Empty;
+			}
+		}
+		return result;
+	}
+
+	public boolean gridIsEmpty()
 	{
 		boolean result = true;
 		for(int i=0; i<size; i++)
