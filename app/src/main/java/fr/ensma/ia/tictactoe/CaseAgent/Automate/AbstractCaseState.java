@@ -11,7 +11,7 @@ public abstract class AbstractCaseState implements ICaseState {
         pres = prs; model = modl;
     }
     @Override
-    public void toClicked() throws CaseException {
+    public void toUnclickable() throws CaseException {
         throw new CaseException();
     }
 

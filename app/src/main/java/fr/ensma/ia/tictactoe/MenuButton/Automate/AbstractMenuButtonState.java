@@ -14,12 +14,12 @@ public abstract class AbstractMenuButtonState implements IMenuButtonState {
     }
 
     @Override
-    public void toClickable()  throws MenuButtonException {
+    public void toTheEnd()  throws MenuButtonException {
         throw new MenuButtonException();
     }
 
     @Override
-    public void toClicked()  throws MenuButtonException {
+    public void toTheBeginning()  throws MenuButtonException {
         throw new MenuButtonException();
     }
 }

@@ -1,5 +1,8 @@
 package fr.ensma.ia.tictactoe.ObserverPattern;
 
 public interface IObserver {
-    void update();
+    void initiate();
+    void updateOnClickCoord(int x, int y);
+    void updateReset();
+    int notifyPlayer();
 }

@@ -14,7 +14,7 @@ public class MenuButtonUnclickable extends AbstractMenuButtonState{
     }
 
     @Override
-    public void toClickable()  throws MenuButtonException {
+    public void toTheEnd() {
         pres.setCurrentState(pres.getClickableState());
         model.setAccessible(true);
         LOGGER.info("Passed on to ClickableState");

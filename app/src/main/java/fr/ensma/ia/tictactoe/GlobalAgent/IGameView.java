@@ -1,5 +1,5 @@
 package fr.ensma.ia.tictactoe.GlobalAgent;
 
 public interface IGameView {
-    void notifyAccess(boolean b, boolean c);
+    void notifyTheEnd(boolean gameHasEnded, int reason);
 }

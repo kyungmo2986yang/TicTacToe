@@ -14,7 +14,7 @@ public class CaseStateUnClicked extends AbstractCaseState {
     }
 
     @Override
-    public void toClicked() throws CaseException {
+    public void toUnclickable() {
         pres.setCurrentState(pres.getUnclickableState());
         model.setAccessible(false);
         LOGGER.info("Passed on to UnclickableState");

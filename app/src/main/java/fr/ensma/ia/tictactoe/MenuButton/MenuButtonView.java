@@ -8,50 +8,45 @@ public class MenuButtonView extends android.support.v7.widget.AppCompatButton im
 
     private MenuButtonPresentation pres;
 
-    public MenuButtonPresentation getPres() {
-        return pres;
-    }
-
-    public void setPres(MenuButtonPresentation pres) {
-        this.pres = pres;
-    }
-
     public MenuButtonView(Context context) {
         super(context);
         init(context);
-        setText("Replay !");
-        setOnClickListener(this);
     }
 
     public MenuButtonView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
-        setText("Replay !");
-        setOnClickListener(this);
     }
 
     public MenuButtonView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
-        setText("Replay !");
-        setOnClickListener(this);
     }
 
     public void init(Context ctx){
+        setText("Replay !");
+        setOnClickListener(null);
+        setBackgroundColor(MenuButtonModel.getColor()[0]);
+    }
+
+    public void setPres(MenuButtonPresentation pres) {
+        this.pres = pres;
+        pres.setView(this);
     }
 
     @Override
-    public void notifyAccess(boolean b) {
+    public void notifyTheEnd(boolean b, int i) {
         if (b) {
             setOnClickListener(this);
+            setBackgroundColor(getResources().getColor(MenuButtonModel.getColor()[i]));
         } else {
             setOnClickListener(null);
+            setBackgroundColor(getResources().getColor(MenuButtonModel.getColor()[0]));
         }
-        setEnabled(b);
     }
 
     @Override
     public void onClick(View v) {
-
+        pres.actionClick();
     }
 }
