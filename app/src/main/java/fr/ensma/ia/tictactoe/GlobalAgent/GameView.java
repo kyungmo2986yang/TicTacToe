@@ -32,7 +32,7 @@ public class GameView extends LinearLayout implements IGameView {
         @Override
         protected Void doInBackground(Integer... integers) {
             int clock = 0;
-            while (clock<5) {
+            while (clock<30) {
                 try {
                     Thread.currentThread().sleep(1000);
                 } catch (InterruptedException e) {
@@ -109,7 +109,7 @@ public class GameView extends LinearLayout implements IGameView {
         menuButtonView = findViewById(R.id.menu);
         boardView = findViewById(R.id.board);
         progressBar = findViewById(R.id.la_bar);
-        progressBar.setMax(5);
+        progressBar.setMax(30);
         textView = findViewById(R.id.description);
         leThTimer = new MonTimer();
         leThTimer.execute();
