@@ -31,8 +31,8 @@ public class CasePresentation implements ICaseObservee {
     }
 
     public void actionClick(){//1-5
-        notifyCoords();//1-5
         actionDeactivate();
+        notifyCoords();//1-5
     }
 
     @Override

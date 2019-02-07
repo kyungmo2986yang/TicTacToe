@@ -20,19 +20,19 @@ public class GameView extends LinearLayout implements IGameView {
     private MenuButtonView menuButtonView;
     private BoardView boardView;
     private static ProgressBar progressBar;
-    private MonTimer leThTimer;
+    private static MonTimer leThTimer;
     private TextView textView;
-    private GamePresentation pres;
+    private static GamePresentation pres;
 
     private SensorManager sensM;
-    private MDDAccel mddAccelVal;
+    private static MDDAccel mddAccelVal;
 
 
-    private class MonTimer extends AsyncTask<Integer,Integer,Void> {
+    private static class MonTimer extends AsyncTask<Integer,Integer,Void> {
         @Override
         protected Void doInBackground(Integer... integers) {
-            int clock = 0;
-            while (clock<30) {
+            int clock = 0; int counterLimit = pres.getTimeLimit();
+            while (clock<counterLimit) {
                 try {
                     Thread.currentThread().sleep(1000);
                 } catch (InterruptedException e) {
@@ -57,13 +57,16 @@ public class GameView extends LinearLayout implements IGameView {
         protected void onPostExecute(Void aVoid) {
             pres.passTurn();
             leThTimer.cancel(true);
+            leThTimer = null;
             progressBar.setProgress(0);
             leThTimer = new MonTimer();
+            System.out.println("bwabwa");
             leThTimer.execute();
+            System.out.println("bwabwaxxx");
         }
     }
 
-    private class MonAcqAccel extends AsyncTask<Void,Float,Void>{
+    private static class MonAcqAccel extends AsyncTask<Void,Float,Void>{
         private float xVal;
 
         @Override
@@ -109,10 +112,8 @@ public class GameView extends LinearLayout implements IGameView {
         menuButtonView = findViewById(R.id.menu);
         boardView = findViewById(R.id.board);
         progressBar = findViewById(R.id.la_bar);
-        progressBar.setMax(30);
         textView = findViewById(R.id.description);
         leThTimer = new MonTimer();
-        leThTimer.execute();
         sensM = (SensorManager) getContext().getSystemService(SENSOR_SERVICE);
         mddAccelVal = new MDDAccel();
         AcquAccel thAcell = new AcquAccel(sensM,mddAccelVal);
@@ -125,6 +126,8 @@ public class GameView extends LinearLayout implements IGameView {
         pres.setView(this);
         boardView.setPres(pres.getBoardPresentation());
         menuButtonView.setPres(pres.getButtonPresentation());
+        progressBar.setMax(pres.getTimeLimit());
+        leThTimer.execute();
     }
 
     /**
@@ -139,6 +142,7 @@ public class GameView extends LinearLayout implements IGameView {
     @Override
     public void notifyTheEnd(boolean gameHasEnded, int reason) {
         leThTimer.cancel(true);
+        leThTimer = null;
         progressBar.setProgress(0);
         if (gameHasEnded){
             textView.setText(GameModel.getEndingSentence()[reason]);
@@ -151,5 +155,11 @@ public class GameView extends LinearLayout implements IGameView {
         }
     }
 
-
+    @Override
+    public void notifyRestart() {
+        textView.setText(GameModel.getPlaySentence()[0]);
+        textView.setTextColor(getResources().getColor(GameModel.getColor()[1]));
+        leThTimer = new MonTimer();
+        leThTimer.execute();
+    }
 }

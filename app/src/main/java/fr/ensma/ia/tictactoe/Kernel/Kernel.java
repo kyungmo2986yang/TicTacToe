@@ -11,6 +11,7 @@ public class Kernel {
 	private EPlayer currentPlayer;
 	private static int notEnded = 3;
 	private static Logger LOGGER = Logger.getLogger(Kernel.class.getName());
+	private int timerLimit;
 	
 	public Kernel()
 	{
@@ -73,4 +74,12 @@ public class Kernel {
     public int getCurrentPlayer() {
 		return currentPlayer.getPlayerVal();
     }
+
+    public int getTimerLimit() {
+		return timerLimit;
+    }
+
+    public void setTimerLimit(int i){
+		timerLimit = i;
+	}
 }
