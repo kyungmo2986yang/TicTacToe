@@ -4,7 +4,7 @@ import fr.ensma.ia.tictactoe.R;
 
 public class MenuButtonModel {
 
-    private static int[] color = {R.color.buttonColor, R.color.buttonTxtColor1, R.color.buttonTxtColor2};
+    private static int[] color = {R.color.buttonColor, R.color.buttonTxtColor1, R.color.buttonTxtColor2, R.color.colorPrimaryDark};
     private boolean accessible;
 
     public MenuButtonModel(){

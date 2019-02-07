@@ -8,8 +8,8 @@ public class GameModel {
     private boolean accessible;
     private Kernel kernel;
     private static int[] playSentence = {R.string.player_1_turn, R.string.player_2_turn};
-    private static int[] endingSentence = {R.string.draw, R.string.player_1_wins, R.string.player_2_wins};
-    private static int[] color = {R.color.buttonColor, R.color.buttonTxtColor1, R.color.buttonTxtColor2};
+    private static int[] endingSentence = {R.string.draw, R.string.player_1_wins, R.string.player_2_wins, R.string.game_cancelled};
+    private static int[] color = {R.color.buttonColor, R.color.buttonTxtColor1, R.color.buttonTxtColor2, R.color.colorPrimaryDark};
 
     public GameModel(){
         accessible = true;
@@ -66,15 +66,19 @@ public class GameModel {
         kernel.resetGame();
     }
 
-    public void changePlayer() {
-        kernel.nextPlayer();
-    }
-
     public void passing() {
         kernel.nextPlayer();
     }
 
     public boolean emptyGrid() {
         return kernel.empty();
+    }
+
+    public void updateTimer(int i) {
+        kernel.setTimerLimit(i);
+    }
+
+    public int getTimeLimit() {
+        return kernel.getTimerLimit();
     }
 }

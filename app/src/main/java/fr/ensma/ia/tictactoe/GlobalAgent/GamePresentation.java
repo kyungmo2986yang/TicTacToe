@@ -98,8 +98,18 @@ public class GamePresentation implements IObserver {
     }
 
     @Override
+    public void updateKill() {
+        actionEnd(3);
+    }
+
+    @Override
     public int notifyPlayer() {
         return getThePlayingGuy();
+    }
+
+    @Override
+    public void updateTimer(int value) {
+        model.updateTimer(value);
     }
 
     private void actionReset(){
@@ -109,7 +119,7 @@ public class GamePresentation implements IObserver {
         } catch (GameException e) {
             e.printStackTrace();
         } finally {
-            view.notifyTheEnd(!model.isAccessible(), 1);
+            view.notifyRestart();
             buttonPresentation.actionDeactivate();
             boardPresentation.actionActivate();
         }
@@ -131,5 +141,9 @@ public class GamePresentation implements IObserver {
 
     public boolean emptyGrid() {
         return model.emptyGrid();
+    }
+
+    public int getTimeLimit() {
+        return model.getTimeLimit();
     }
 }

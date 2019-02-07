@@ -7,4 +7,9 @@
     <string name="player_1_wins">Player 1 wins !!</string>
     <string name="player_2_wins">Player 2 wins !!</string>
     <string name="draw">Draw</string>
+    <string name="play">PLAY !</string>
+    <string name="set_time_counter">Set Time Counter</string>
+    <string name="todo">TODO</string>
+    <string name="geterror">Configure Time Counter before</string>
+    <string name="game_cancelled">Game Canceled</string>
 </resources>
