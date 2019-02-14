@@ -26,7 +26,7 @@ public class MenuButtonView extends android.support.v7.widget.AppCompatButton im
     public void init(Context ctx){
         setText("Replay !");
         setOnClickListener(null);
-        setBackgroundColor(MenuButtonModel.getColor()[0]);
+        setBackgroundColor(getResources().getColor(MenuButtonModel.getColor()[0]));
     }
 
     public void setPres(MenuButtonPresentation pres) {

@@ -60,9 +60,7 @@ public class GameView extends LinearLayout implements IGameView {
             leThTimer = null;
             progressBar.setProgress(0);
             leThTimer = new MonTimer();
-            System.out.println("bwabwa");
             leThTimer.execute();
-            System.out.println("bwabwaxxx");
         }
     }
 
@@ -141,8 +139,10 @@ public class GameView extends LinearLayout implements IGameView {
      */
     @Override
     public void notifyTheEnd(boolean gameHasEnded, int reason) {
-        leThTimer.cancel(true);
-        leThTimer = null;
+        if (leThTimer != null) {
+            leThTimer.cancel(true);
+            leThTimer = null;
+        }
         progressBar.setProgress(0);
         if (gameHasEnded){
             textView.setText(GameModel.getEndingSentence()[reason]);
